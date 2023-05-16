@@ -3,29 +3,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 
-public class PlayButton : MonoBehaviour
+public class Manager : MonoBehaviour
 {
     [SerializeField] GameObject videoDisplayer;
     [SerializeField] GameObject pauseUI;
-    VideoPlayer videoPlayer;
+    [SerializeField] GameObject formUI;
+    [SerializeField] VideoPlayer videoPlayer;
 
-    private void Awake()
-    {
-        videoPlayer = GetComponent<VideoPlayer>();
-    }
+    float videoLenght = 31.67f;
+
     // Start is called before the first frame update
     void Start()
     {
         videoDisplayer.SetActive(false);
         pauseUI.SetActive(false);
+        formUI.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
         PauseVideo();
+        DisplayForm();
     }
 
+
+    public void SubmitForm()
+    {
+        formUI.SetActive(false);
+    }
+    public void DisplayForm()
+    {
+        if (videoPlayer.time >= videoLenght)
+        {
+            formUI.SetActive(true);
+            videoDisplayer.SetActive(false);
+            videoPlayer.Stop();
+        }
+    }
     public void ContinueVideo()
     {
         pauseUI.SetActive(false);
@@ -33,18 +48,21 @@ public class PlayButton : MonoBehaviour
     }
     public void BackToMenu()
     {
+        videoDisplayer.SetActive(false);
         pauseUI.SetActive(false);
         videoPlayer.Stop();
     }
     public void PauseVideo()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (videoPlayer.isPlaying)
         {
-            pauseUI.SetActive(true);
-            videoPlayer.Pause();
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                pauseUI.SetActive(true);
+                videoPlayer.Pause();
+            }
         }
     }
-
     public void PlayVideo()
     {
         videoDisplayer.SetActive(true);
