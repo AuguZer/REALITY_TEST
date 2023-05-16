@@ -56,7 +56,7 @@ public class Manager : MonoBehaviour
     {
         if (videoPlayer.isPlaying)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Mouse0))
             {
                 pauseUI.SetActive(true);
                 videoPlayer.Pause();
